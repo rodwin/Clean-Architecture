@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using System;
 
-namespace CA.WebUI.Migrations
+namespace CA.Infrastructure.Persistence.Migrations
 {
     public partial class Initial : Migration
     {
