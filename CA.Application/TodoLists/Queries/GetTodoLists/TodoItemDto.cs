@@ -1,10 +1,12 @@
-﻿using CA.Domain.Entities;
+﻿using AutoMapper;
+using CA.Application.Common.Mappings;
+using CA.Domain.Entities;
 using System;
 using System.Linq.Expressions;
 
 namespace CA.Application.TodoLists.Queries.GetTodoLists
 {
-    public class TodoItemDto
+    public class TodoItemDto : IMapFrom<TodoItem>
     {
         public long Id { get; set; }
 
@@ -17,22 +19,6 @@ namespace CA.Application.TodoLists.Queries.GetTodoLists
         public int Priority { get; set; }
 
         public string Note { get; set; }
-
-        public static Expression<Func<TodoItem, TodoItemDto>> Projection
-        {
-            get
-            {
-                return item => new TodoItemDto
-                {
-                    Id = item.Id,
-                    ListId = item.ListId,
-                    Title = item.Title,
-                    Done = item.Done,
-                    Priority = (int)item.Priority,
-                    Note = item.Note
-                };
-            }
-        }
     }
 
 }

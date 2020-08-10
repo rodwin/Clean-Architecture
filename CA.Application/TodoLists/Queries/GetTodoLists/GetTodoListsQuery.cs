@@ -1,4 +1,6 @@
-﻿using CA.Application.Common.Interfaces;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CA.Application.Common.Interfaces;
 using CA.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +18,12 @@ namespace CA.Application.TodoLists.Queries.GetTodoLists
     public class GetTodoListsQueryHandler : IRequestHandler<GetTodoListsQuery, TodosVm>
     {
         private readonly IApplicationDbContext _context;
+        private IMapper _mapper;
 
-        public GetTodoListsQueryHandler(IApplicationDbContext context)
+        public GetTodoListsQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<TodosVm> Handle(
@@ -29,7 +33,7 @@ namespace CA.Application.TodoLists.Queries.GetTodoLists
             var vm = new TodosVm();
 
             vm.Lists = await _context.TodoLists
-                .Select(TodoListDto.Projection)
+                .ProjectTo<TodoListDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
             return vm;

@@ -12,6 +12,7 @@ namespace CA.Application
             IConfiguration configuration)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             return services;
         }
