@@ -1,7 +1,9 @@
-﻿using CA.Infrastructure.Persistence;
+﻿using CA.Application.Common.Interfaces;
+using CA.Infrastructure.Persistence;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Moq;
 using System;
 
 namespace CA.Application.UnitTests
@@ -23,8 +25,13 @@ namespace CA.Application.UnitTests
                         new TableConfiguration("PersistedGrants")
                 });
 
+            var currentUserServiceMock = new Mock<ICurrentUserService>();
+            currentUserServiceMock.Setup(m => m.UserId)
+                .Returns("00000000-0000-0000-0000-000000000000");
+
             var context = new ApplicationDbContext(
-                options, operationalStoreOptions);
+                options, operationalStoreOptions,
+                currentUserServiceMock.Object);
 
             ApplicationDbContextSeeder.Seed(context);
 

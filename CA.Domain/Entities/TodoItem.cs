@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CA.Domain.Common;
+using System;
 
 namespace CA.Domain.Entities
 {
-    public class TodoItem
+    public class TodoItem : AuditableEntity
     {
         public long Id { get; set; }
 

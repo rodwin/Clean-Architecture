@@ -7,9 +7,12 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace CA.WebUI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoListsController : ControllerBase

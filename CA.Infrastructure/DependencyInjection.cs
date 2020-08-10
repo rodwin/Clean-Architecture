@@ -27,6 +27,8 @@ namespace CA.Infrastructure
             services.AddScoped<IApplicationDbContext>(provider =>
                 provider.GetService<ApplicationDbContext>());
 
+            services.AddScoped<IIdentityService, IdentityService>();
+
             return services;
         }
     }
