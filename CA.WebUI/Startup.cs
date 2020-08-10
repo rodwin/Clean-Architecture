@@ -1,5 +1,6 @@
 using CA.Application;
 using CA.Infrastructure;
+using CA.WebUI.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -36,6 +37,8 @@ namespace CA.WebUI
             {
                 configure.Title = "CA API";
             });
+
+            services.AddControllersWithViews(options => options.Filters.Add(new ApiExceptionFilter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
