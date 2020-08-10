@@ -18,7 +18,7 @@ namespace CA.Infrastructure.Persistence
         private readonly ICurrentUserService _currentUserService;
 
         public ApplicationDbContext(
-            DbContextOptions options,
+            DbContextOptions<ApplicationDbContext> options,
             IOptions<OperationalStoreOptions> operationalStoreOptions,
             ICurrentUserService currentUserService)
             : base(options, operationalStoreOptions)

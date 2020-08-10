@@ -1,8 +1,10 @@
 using CA.Application;
 using CA.Application.Common.Interfaces;
 using CA.Infrastructure;
+using CA.Infrastructure.Persistence;
 using CA.WebUI.Filters;
 using CA.WebUI.Services;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -60,6 +62,17 @@ namespace CA.WebUI
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+            services.AddHealthChecks()
+                .AddDbContextCheck<ApplicationDbContext>()
+                .AddSmtpHealthCheck(options =>
+                {
+                    options.Host = "localhost";
+                    options.Port = 25;
+                });
+
+            services
+                .AddHealthChecksUI()
+                .AddInMemoryStorage();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,10 +101,20 @@ namespace CA.WebUI
             app.UseSwaggerUi3();
 
             app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                endpoints.MapHealthChecksUI();
+            });
 
             app.UseAuthentication();
             app.UseIdentityServer();
-            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
